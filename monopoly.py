@@ -84,6 +84,15 @@ class Game:
         self.current_turn = (self.current_turn + 1) % len(self.players)
 
 player1 = Player("Alice")
+player2 = Player("Bob")
+
+board = Board()
 boardwalk = Property("Boardwalk", 400, 50)
-boardwalk.buy(player1)
-print(player1.money, player1.properties)
+board.place_property(1, boardwalk)
+
+game = Game([player1, player2], board)
+
+for _ in range(4):  # 2 turns each
+    game.next_turn()
+    print(player1.name, player1.money, player1.properties)
+    print(player2.name, player2.money, player2.properties)
