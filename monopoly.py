@@ -1,3 +1,4 @@
+import random
 class Player:
     def __init__(self, name, money=1500):
         self.name = name
@@ -56,6 +57,31 @@ class Board:
 
     def get_space(self, index):
         return self.spaces[index]
+
+class Game:
+    def __init__(self, players, board):
+        self.players = players
+        self.board = board
+        self.current_turn = 0
+
+    def roll_dice(self):
+        return random.randint(1, 6) + random.randint(1, 6)
+
+    def next_turn(self):
+        player = self.players[self.current_turn]
+        steps = self.roll_dice()
+        player.move(steps)
+        tile = self.board.spaces[player.position]
+
+        if isinstance(tile, Property):
+            if not tile.is_owned():
+                bought = tile.buy(player)
+                if bought:
+                    print(f"{player.name} bought {tile.name}")
+            else:
+                tile.charge_rent(player)
+
+        self.current_turn = (self.current_turn + 1) % len(self.players)
 
 player1 = Player("Alice")
 boardwalk = Property("Boardwalk", 400, 50)
