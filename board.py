@@ -14,6 +14,7 @@ class Board:
     def get_space(self, index):
         return self.spaces[index]
     
+
 # === Dark Purple ===
 med_ave = Property("Mediterranean Avenue", 60, 2)
 baltic_ave = Property("Baltic Avenue", 60, 4)
@@ -44,18 +45,39 @@ pennsylvania_ave = Property("Pennsylvania Avenue", 320, 28)
 # === Dark Blue ===
 park_place = Property("Park Place", 350, 35)
 boardwalk = Property("Boardwalk", 400, 50)
+# === Railroads ===
+reading_rr = Property("Reading Railroad", 200, 25)
+pennsylvania_rr = Property("Pennsylvania Railroad", 200, 25)
+bno_rr = Property("B&O Railroad", 200, 25)
+short_line = Property("Short Line", 200, 25)
+# === Utilities ===
+electric_company = Property("Electric Company", 150, 10)
+water_works = Property("Water Works", 150, 10)
 
 properties_positions = [
     (1, med_ave), (3, baltic_ave), 
+    (5, reading_rr),
     (6, oriental_ave), (8, vermont_ave), (9, conn_ave),
-    (11, st_charles), (13, states_ave), (14, virginia_ave),
+    (11, st_charles), (12, electric_company), (13, states_ave), (14, virginia_ave),
+    (15, pennsylvania_rr),
     (16, st_james), (18, tennessee_ave), (19, new_york_ave),
     (21, kentucky_ave), (23, indiana_ave), (24, illinois_ave),
-    (26, atlantic_ave), (27, ventnor_ave), (29, marvin_gardens),
+    (25, bno_rr),
+    (26, atlantic_ave), (27, ventnor_ave), (28, water_works), (29, marvin_gardens),
     (31, pacific_ave), (32, north_carolina_ave), (34, pennsylvania_ave),
+    (35, short_line),
     (37, park_place), (39, boardwalk)
 ]
 
 board = Board()
 for pos, prop in properties_positions:
     board.place_property(pos, prop)
+
+special_spaces = {
+    2: "Community Chest", 4: "Income Tax",
+    7: "Chance", 17: "Community Chest", 22: "Chance",
+    33: "Community Chest", 36: "Chance",
+    38: "Luxury Tax"
+}
+for pos, label in special_spaces.items():
+    board.place_property(pos, label)
