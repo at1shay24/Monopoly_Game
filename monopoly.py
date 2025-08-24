@@ -42,6 +42,20 @@ class Property:
         if self.is_owned() and self.owner != player:
             player.pay(self.rent)
             self.owner.receive(self.rent)
+class Board:
+    def __init__(self):
+        self.spaces = [None] * 40
+        self.spaces[0] = "Go"
+        self.spaces[10] = "Jail"
+        self.spaces[20] = "Free Parking"
+        self.spaces[30] = "Go To Jail"
+
+    def place_property(self, index, property_obj):
+        if 0 <= index < len(self.spaces):
+            self.spaces[index] = property_obj
+
+    def get_space(self, index):
+        return self.spaces[index]
 
 player1 = Player("Alice")
 boardwalk = Property("Boardwalk", 400, 50)
