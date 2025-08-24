@@ -1,20 +1,18 @@
-import random
 from player import Player
 from property import Property
 from board import Board
-
+from dice import Dice
 class Game:
     def __init__(self, players, board):
         self.players = players
         self.board = board
         self.current_turn = 0
 
-    def roll_dice(self):
-        return random.randint(1, 6) + random.randint(1, 6)
-
     def next_turn(self):
         player = self.players[self.current_turn]
-        steps = 1   
+        steps, dice_values = Dice.roll()
+        print(f"{player.name} rolled {dice_values} → moving {steps} steps")
+        
         player.move(steps)
         tile = self.board.spaces[player.position]
 
@@ -37,5 +35,5 @@ game = Game([player1, player2], board)
 
 for _ in range(4):
     game.next_turn()
-    print(player1.name, player1.money, player1.properties)
-    print(player2.name, player2.money, player2.properties)
+    print(player1.name, player1.money, [p.name for p in player1.properties])
+    print(player2.name, player2.money, [p.name for p in player2.properties])
