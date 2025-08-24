@@ -20,3 +20,30 @@ class Player:
             self.properties.append(property_name)
             return True
         return False
+
+class Property:
+    def __init__(self, name, price, rent):
+        self.name = name
+        self.price = price
+        self.rent = rent
+        self.owner = None
+
+    def is_owned(self):
+        return self.owner is not None
+
+    def buy(self, player):
+        if not self.is_owned() and player.money >= self.price:
+            player.buy_property(self.name, self.price)
+            self.owner = player
+            return True
+        return False
+
+    def charge_rent(self, player):
+        if self.is_owned() and self.owner != player:
+            player.pay(self.rent)
+            self.owner.receive(self.rent)
+
+player1 = Player("Alice")
+boardwalk = Property("Boardwalk", 400, 50)
+boardwalk.buy(player1)
+print(player1.money, player1.properties)
