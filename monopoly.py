@@ -43,6 +43,7 @@ class Property:
         if self.is_owned() and self.owner != player:
             player.pay(self.rent)
             self.owner.receive(self.rent)
+
 class Board:
     def __init__(self):
         self.spaces = [None] * 40
@@ -69,7 +70,7 @@ class Game:
 
     def next_turn(self):
         player = self.players[self.current_turn]
-        steps = self.roll_dice()
+        steps = 1   # force move 1 step for testing
         player.move(steps)
         tile = self.board.spaces[player.position]
 
@@ -80,6 +81,7 @@ class Game:
                     print(f"{player.name} bought {tile.name}")
             else:
                 tile.charge_rent(player)
+                print(f"{player.name} paid {tile.rent} rent to {tile.owner.name}")
 
         self.current_turn = (self.current_turn + 1) % len(self.players)
 
@@ -92,7 +94,7 @@ board.place_property(1, boardwalk)
 
 game = Game([player1, player2], board)
 
-for _ in range(4):  # 2 turns each
+for _ in range(4):
     game.next_turn()
     print(player1.name, player1.money, player1.properties)
     print(player2.name, player2.money, player2.properties)
