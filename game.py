@@ -2,6 +2,7 @@ from board import board
 from property import Property
 from player import Player
 from dice import Dice
+from cards import chance_deck, community_chest_deck
 
 class Game:
     def __init__(self, players):
@@ -30,6 +31,29 @@ class Game:
         elif isinstance(tile, str):
             print(f"{player.name} landed on {tile}")
 
+            if tile == "Chance":
+                card = chance_deck.draw()
+                card.apply(player, self)
+
+            elif tile == "Community Chest":
+                card = community_chest_deck.draw()
+                card.apply(player, self)
+
+            elif tile == "Go":
+                print(f"{player.name} collects $200 for passing Go!")
+
+            elif tile == "Jail":
+                if player.in_jail:
+                    print(f"{player.name} is in Jail!")
+
+            elif tile == "Free Parking":
+                print(f"{player.name} is taking a break at Free Parking.")
+
+            elif tile == "Go to Jail":
+                player.position = 10
+                player.in_jail = True
+                print(f"{player.name} is sent directly to Jail!")
+                
         self.current_turn = (self.current_turn + 1) % len(self.players)
 
 
