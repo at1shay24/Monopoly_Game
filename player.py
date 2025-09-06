@@ -5,12 +5,16 @@ class Player:
         self.position = 0
         self.properties = []
         self.in_jail = False
+        self.jail_turns = 0 
 
     def move(self, steps):
+        if self.in_jail:
+            print(f"{self.name} is in Jail and cannot move!")
+            return
+
         old_position = self.position
         self.position = (self.position + steps) % 40
 
-        # Passed 'Go'
         if self.position < old_position:
             self.money += 200
             print(f"{self.name} passed Go and collected $200!")
@@ -27,6 +31,28 @@ class Player:
             self.properties.append(property_obj)
             return True
         return False
-    
+
+    def go_to_jail(self):
+        self.in_jail = True
+        self.jail_turns = 0
+        self.position = 10  
+        print(f"{self.name} has been sent to Jail!")
+
+    def attempt_jail_exit(self, die1, die2):
+        if die1 == die2:  
+            self.in_jail = False
+            self.jail_turns = 0
+            print(f"{self.name} rolled doubles and is free from Jail!")
+            return True
+        else:
+            self.jail_turns += 1
+            if self.jail_turns >= 3:  
+                self.pay(50)
+                self.in_jail = False
+                self.jail_turns = 0
+                print(f"{self.name} paid $50 after 3 turns and is free from Jail!")
+                return True
+        return False
+
     def __str__(self):
         return f"{self.name}: ${self.money}, Position {self.position}, Properties: {[p.name for p in self.properties]}"
