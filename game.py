@@ -2,31 +2,34 @@ from board import board
 from property import Property
 from player import Player
 from dice import Dice
-from cards import chance_deck, community_chest_deck, CardDeck
+from cards import chance_deck, community_chest_deck
+
 
 class Game:
     def __init__(self, players):
         self.players = players
         self.current_turn = 0
         self.board = board
-        self.chance_deck = CardDeck(chance_deck.cards)
-        self.community_chest_deck = CardDeck(community_chest_deck.cards)
 
     def next_turn(self):
         player = self.players[self.current_turn]
-
-        print(f"\n--- {player.name}'s turn ---")
-        total, (die1, die2) = Dice.roll()
-        print(f"{player.name} rolled {die1} + {die2} = {total}")
+        print(f"\n--- {player.name}'s Turn ---")
 
         if player.in_jail:
+            total, (die1, die2) = Dice.roll()
+            print(f"{player.name} rolled {die1} + {die2} = {total} (trying to leave Jail)")
             freed = player.attempt_jail_exit(die1, die2)
             if not freed:
                 print(f"{player.name} remains in Jail.")
-                self.end_turn()
-                return
+                self.current_turn = (self.current_turn + 1) % len(self.players)
+                return 
+            else:
+                player.move(total)
 
-        player.move(total)
+        else:
+            total, (die1, die2) = Dice.roll()
+            print(f"{player.name} rolled {die1} + {die2} = {total}")
+            player.move(total)
 
         tile = self.board.get_space(player.position)
 
@@ -39,22 +42,29 @@ class Game:
                 tile.charge_rent(player)
                 print(f"{player.name} paid ${tile.rent} rent to {tile.owner.name}")
 
-        elif tile == "Chance":
-            card = self.chance_deck.draw()
-            card.apply(player, self)
-        elif tile == "Community Chest":
-            card = self.community_chest_deck.draw()
-            card.apply(player, self)
-
-        elif tile == "Go to Jail":
-            player.go_to_jail()
-
-        else:
+        elif isinstance(tile, str):
             print(f"{player.name} landed on {tile}")
 
-        self.end_turn()
+            if tile == "Go To Jail":
+                player.go_to_jail()
 
-    def end_turn(self):
+            elif tile == "Chance":
+                card = chance_deck.draw()
+                card.apply(player, self)
+
+            elif tile == "Community Chest":
+                card = community_chest_deck.draw()
+                card.apply(player, self)
+
+            elif tile == "Income Tax":
+                tax = min(200, int(player.money * 0.1))
+                player.pay(tax)
+                print(f"{player.name} paid ${tax} in Income Tax")
+
+            elif tile == "Luxury Tax":
+                player.pay(100)
+                print(f"{player.name} paid $100 in Luxury Tax")
+
         self.current_turn = (self.current_turn + 1) % len(self.players)
 
 
