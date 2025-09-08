@@ -22,7 +22,7 @@ class Game:
             if not freed:
                 print(f"{player.name} remains in Jail.")
                 self.current_turn = (self.current_turn + 1) % len(self.players)
-                return 
+                return
             else:
                 player.move(total)
 
@@ -39,8 +39,15 @@ class Game:
                 if bought:
                     print(f"{player.name} bought {tile.name} for ${tile.price}")
             else:
-                tile.charge_rent(player)
-                print(f"{player.name} paid ${tile.rent} rent to {tile.owner.name}")
+                if tile.owner != player:
+                    tile.charge_rent(player)
+                else:
+                    if not tile.hotel:
+                        choice = input(f"{player.name}, do you want to build on {tile.name}? (house/hotel/none): ").strip().lower()
+                        if choice == "house":
+                            player.build_house(tile)
+                        elif choice == "hotel":
+                            player.build_hotel(tile)
 
         elif isinstance(tile, str):
             print(f"{player.name} landed on {tile}")
