@@ -32,6 +32,20 @@ class Player:
             return True
         return False
 
+    def build_house(self, property_obj):
+        if property_obj in self.properties:
+            return property_obj.build_house(self)
+        else:
+            print(f"{self.name} cannot build a house on {property_obj.name} (not owned).")
+            return False
+
+    def build_hotel(self, property_obj):
+        if property_obj in self.properties:
+            return property_obj.build_hotel(self)
+        else:
+            print(f"{self.name} cannot build a hotel on {property_obj.name} (not owned).")
+            return False
+
     def go_to_jail(self):
         self.in_jail = True
         self.jail_turns = 0
@@ -55,4 +69,8 @@ class Player:
         return False
 
     def __str__(self):
-        return f"{self.name}: ${self.money}, Position {self.position}, Properties: {[p.name for p in self.properties]}"
+        props = [
+            f"{p.name} (Houses: {p.houses}, Hotel: {'Yes' if p.hotel else 'No'})"
+            for p in self.properties
+        ]
+        return f"{self.name}: ${self.money}, Position {self.position}, Properties: {props}"
