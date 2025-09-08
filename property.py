@@ -21,13 +21,14 @@ class Property:
 
     def build_house(self, player):
         if self.owner == player and not self.hotel:
-            if player.money >= self.house_cost:
-                player.money -= self.house_cost
-                self.houses += 1
-                print(f"{player.name} built a house on {self.name}. Total houses: {self.houses}")
-                if self.houses == 4:
-                    print(f"{self.name} is now eligible for a hotel upgrade!")
-                return True
+            if self.houses < 4: 
+                if player.money >= self.house_cost:
+                    player.money -= self.house_cost
+                    self.houses += 1
+                    print(f"{player.name} built a house on {self.name}. Total houses: {self.houses}")
+                    if self.houses == 4:
+                        print(f"{self.name} now has 4 houses and is eligible for a hotel upgrade!")
+                    return True
         return False
 
     def build_hotel(self, player):
@@ -36,10 +37,12 @@ class Property:
                 player.money -= self.house_cost * 2
                 self.houses = 0
                 self.hotel = True
-                print(f"{player.name} built a HOTEL on {self.name}!")
+                print(f"{player.name} upgraded {self.name} to a HOTEL!")
                 return True
+        else:
+            print(f"{self.name} cannot be upgraded to a hotel yet (needs 4 houses first).")
         return False
-
+    
     def get_rent(self):
         if self.hotel:
             return self.base_rent * 5
