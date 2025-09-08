@@ -38,16 +38,17 @@ class Game:
                 bought = tile.buy(player)
                 if bought:
                     print(f"{player.name} bought {tile.name} for ${tile.price}")
+                    if tile.houses < 4:
+                        built = player.build_house(tile)
+                        if built:
+                            print(f"{player.name} chose to build a house on {tile.name}")
+                    elif tile.houses == 4 and not tile.hotel:
+                        built = player.build_hotel(tile)
+                        if built:
+                            print(f"{player.name} upgraded {tile.name} to a hotel")
+                            
             else:
-                if tile.owner != player:
-                    tile.charge_rent(player)
-                else:
-                    if not tile.hotel:
-                        choice = input(f"{player.name}, do you want to build on {tile.name}? (house/hotel/none): ").strip().lower()
-                        if choice == "house":
-                            player.build_house(tile)
-                        elif choice == "hotel":
-                            player.build_hotel(tile)
+                tile.charge_rent(player)
 
         elif isinstance(tile, str):
             print(f"{player.name} landed on {tile}")
