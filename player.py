@@ -46,6 +46,41 @@ class Player:
             print(f"{self.name} cannot build a hotel on {property_obj.name} (not owned).")
             return False
 
+    def trade(self, other_player, offered_properties=[], requested_properties=[], cash_offer=0, cash_request=0):
+        for prop in offered_properties:
+            if prop not in self.properties:
+                print(f"{self.name} does not own {prop.name}. Trade canceled.")
+                return False
+        for prop in requested_properties:
+            if prop not in other_player.properties:
+                print(f"{other_player.name} does not own {prop.name}. Trade canceled.")
+                return False
+
+        # Show trade details
+        print(f"{self.name} offers {', '.join([p.name for p in offered_properties])} + ${cash_offer} to {other_player.name}")
+        print(f"In exchange for {', '.join([p.name for p in requested_properties])} + ${cash_request}")
+
+        accept = True
+        if accept:
+            for prop in offered_properties:
+                self.properties.remove(prop)
+                other_player.properties.append(prop)
+                prop.owner = other_player
+            for prop in requested_properties:
+                other_player.properties.remove(prop)
+                self.properties.append(prop)
+                prop.owner = self
+            self.money -= cash_offer
+            self.money += cash_request
+            other_player.money -= cash_request
+            other_player.money += cash_offer
+
+            print("Trade completed successfully!")
+            return True
+        else:
+            print("Trade rejected.")
+            return False
+        
     def go_to_jail(self):
         self.in_jail = True
         self.jail_turns = 0

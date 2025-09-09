@@ -4,7 +4,6 @@ from player import Player
 from dice import Dice
 from cards import chance_deck, community_chest_deck
 
-
 class Game:
     def __init__(self, players):
         self.players = players
@@ -25,7 +24,6 @@ class Game:
                 return
             else:
                 player.move(total)
-
         else:
             total, (die1, die2) = Dice.roll()
             print(f"{player.name} rolled {die1} + {die2} = {total}")
@@ -46,7 +44,6 @@ class Game:
                         built = player.build_hotel(tile)
                         if built:
                             print(f"{player.name} upgraded {tile.name} to a hotel")
-                            
             else:
                 tile.charge_rent(player)
 
