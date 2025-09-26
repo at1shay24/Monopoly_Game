@@ -14,56 +14,66 @@ class Board:
     def get_space(self, index):
         return self.spaces[index]
 # Dark Purple
-med_ave = Property("Mediterranean Avenue", 60, 2)
-baltic_ave = Property("Baltic Avenue", 60, 4)
-# Light Blue
-oriental_ave = Property("Oriental Avenue", 100, 6)
-vermont_ave = Property("Vermont Avenue", 100, 6)
-conn_ave = Property("Connecticut Avenue", 120, 8)
-# Pink
-st_charles = Property("St. Charles Place", 140, 10)
-states_ave = Property("States Avenue", 140, 10)
-virginia_ave = Property("Virginia Avenue", 160, 12)
-# Orange
-st_james = Property("St. James Place", 180, 14)
-tennessee_ave = Property("Tennessee Avenue", 180, 14)
-new_york_ave = Property("New York Avenue", 200, 16)
-# Red
-kentucky_ave = Property("Kentucky Avenue", 220, 18)
-indiana_ave = Property("Indiana Avenue", 220, 18)
-illinois_ave = Property("Illinois Avenue", 240, 20)
-# Yellow
-atlantic_ave = Property("Atlantic Avenue", 260, 22)
-ventnor_ave = Property("Ventnor Avenue", 260, 22)
-marvin_gardens = Property("Marvin Gardens", 280, 24)
-# Green
-pacific_ave = Property("Pacific Avenue", 300, 26)
-north_carolina_ave = Property("North Carolina Avenue", 300, 26)
-pennsylvania_ave = Property("Pennsylvania Avenue", 320, 28)
-# Dark Blue
-park_place = Property("Park Place", 350, 35)
-boardwalk = Property("Boardwalk", 400, 50)
-# Railroads
-reading_rr = Property("Reading Railroad", 200, 25)
-pennsylvania_rr = Property("Pennsylvania Railroad", 200, 25)
-bno_rr = Property("B&O Railroad", 200, 25)
-short_line = Property("Short Line", 200, 25)
-# Utilities
-electric_company = Property("Electric Company", 150, 10)
-water_works = Property("Water Works", 150, 10)
+rani_bagh = Property("Rani Bagh", 60, 2, color="Purple")
+shakurpur = Property("Shakurpur", 60, 4, color="Purple")
 
+# Light Blue
+pitampura = Property("Pitampura", 100, 6, color="Light Blue")
+saraswati_vihar = Property("Saraswati Vihar", 100, 6, color="Light Blue")
+kohat_enclave = Property("Kohat Enclave", 120, 8, color="Light Blue")
+
+# Pink
+rohini_sec3 = Property("Rohini Sector 3", 140, 10, color="Pink")
+rohini_sec7 = Property("Rohini Sector 7", 140, 10, color="Pink")
+rohini_sec9 = Property("Rohini Sector 9", 160, 12, color="Pink")
+
+# Orange
+ashok_vihar = Property("Ashok Vihar", 180, 14, color="Orange")
+sadar_bazar = Property("Sadar Bazar", 180, 14, color="Orange")
+kamla_nagar = Property("Kamla Nagar", 200, 16, color="Orange")
+
+# Red
+karol_bagh = Property("Karol Bagh", 220, 18, color="Red")
+rajouri_garden = Property("Rajouri Garden", 220, 18, color="Red")
+punjabi_bagh = Property("Punjabi Bagh", 240, 20, color="Red")
+
+# Yellow
+janakpuri = Property("Janakpuri", 260, 22, color="Yellow")
+tilak_nagar = Property("Tilak Nagar", 260, 22, color="Yellow")
+subhash_nagar = Property("Subhash Nagar", 280, 24, color="Yellow")
+
+# Green
+hauz_khas = Property("Hauz Khas", 300, 26, color="Green")
+greater_kailash = Property("Greater Kailash", 300, 26, color="Green")
+defence_colony = Property("Defence Colony", 320, 28, color="Green")
+
+# Dark Blue
+chanakyapuri = Property("Chanakyapuri", 350, 35, color="Dark Blue")
+gk_mblock = Property("GK M Block Market", 400, 50, color="Dark Blue")
+
+# Railroads
+new_delhi_station = Property("New Delhi Railway Station", 200, 25, color="Railroad")
+shakur_basti = Property("Shakur Basti Railway", 200, 25, color="Railroad")
+nizamuddin_station = Property("Hazrat Nizamuddin Railway", 200, 25, color="Railroad")
+delhi_cantt = Property("Delhi Cantt Railway", 200, 25, color="Railroad")
+
+# Utilities
+electric_company = Property("BSES Rajdhani Power", 150, 10, color="Utility")
+water_supply = Property("Delhi Jal Board", 150, 10, color="Utility")
+
+# Positioning them on the board
 properties_positions = [
-    (1, med_ave), (3, baltic_ave), (5, reading_rr),
-    (6, oriental_ave), (8, vermont_ave), (9, conn_ave),
-    (11, st_charles), (12, electric_company), (13, states_ave), (14, virginia_ave),
-    (15, pennsylvania_rr),
-    (16, st_james), (18, tennessee_ave), (19, new_york_ave),
-    (21, kentucky_ave), (23, indiana_ave), (24, illinois_ave),
-    (25, bno_rr),
-    (26, atlantic_ave), (27, ventnor_ave), (28, water_works), (29, marvin_gardens),
-    (31, pacific_ave), (32, north_carolina_ave), (34, pennsylvania_ave),
-    (35, short_line),
-    (37, park_place), (39, boardwalk)
+    (1, rani_bagh), (3, shakurpur), (5, new_delhi_station),
+    (6, pitampura), (8, saraswati_vihar), (9, kohat_enclave),
+    (11, rohini_sec3), (12, electric_company), (13, rohini_sec7), (14, rohini_sec9),
+    (15, shakur_basti),
+    (16, ashok_vihar), (18, sadar_bazar), (19, kamla_nagar),
+    (21, karol_bagh), (23, rajouri_garden), (24, punjabi_bagh),
+    (25, nizamuddin_station),
+    (26, janakpuri), (27, tilak_nagar), (28, water_supply), (29, subhash_nagar),
+    (31, hauz_khas), (32, greater_kailash), (34, defence_colony),
+    (35, delhi_cantt),
+    (37, chanakyapuri), (39, gk_mblock)
 ]
 
 special_spaces = {
