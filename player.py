@@ -1,3 +1,5 @@
+from property import Property
+
 class Player:
     def __init__(self, name, money=1500):
         self.name = name
@@ -11,10 +13,8 @@ class Player:
         if self.in_jail:
             print(f"{self.name} is in Jail and cannot move!")
             return
-
         old_position = self.position
         self.position = (self.position + steps) % 40
-
         if self.position < old_position:
             self.money += 200
             print(f"{self.name} passed Go and collected $200!")
@@ -32,55 +32,25 @@ class Player:
             return True
         return False
 
-    def build_house(self, property_obj):
-        if property_obj in self.properties:
+    def owns_full_set(self, property_obj, board):
+        group_color = property_obj.color
+        group_props = [p for p in board.spaces if hasattr(p, "color") and p.color == group_color]
+        return all(p in self.properties for p in group_props)
+
+    def build_house(self, property_obj, board):
+        if property_obj in self.properties and self.owns_full_set(property_obj, board):
             return property_obj.build_house(self)
         else:
-            print(f"{self.name} cannot build a house on {property_obj.name} (not owned).")
+            print(f"{self.name} cannot build a house on {property_obj.name} without owning full set.")
             return False
 
-    def build_hotel(self, property_obj):
-        if property_obj in self.properties:
+    def build_hotel(self, property_obj, board):
+        if property_obj in self.properties and self.owns_full_set(property_obj, board):
             return property_obj.build_hotel(self)
         else:
-            print(f"{self.name} cannot build a hotel on {property_obj.name} (not owned).")
+            print(f"{self.name} cannot build a hotel on {property_obj.name} without owning full set.")
             return False
 
-    def trade(self, other_player, offered_properties=[], requested_properties=[], cash_offer=0, cash_request=0):
-        for prop in offered_properties:
-            if prop not in self.properties:
-                print(f"{self.name} does not own {prop.name}. Trade canceled.")
-                return False
-        for prop in requested_properties:
-            if prop not in other_player.properties:
-                print(f"{other_player.name} does not own {prop.name}. Trade canceled.")
-                return False
-
-        # Show trade details
-        print(f"{self.name} offers {', '.join([p.name for p in offered_properties])} + ${cash_offer} to {other_player.name}")
-        print(f"In exchange for {', '.join([p.name for p in requested_properties])} + ${cash_request}")
-
-        accept = True
-        if accept:
-            for prop in offered_properties:
-                self.properties.remove(prop)
-                other_player.properties.append(prop)
-                prop.owner = other_player
-            for prop in requested_properties:
-                other_player.properties.remove(prop)
-                self.properties.append(prop)
-                prop.owner = self
-            self.money -= cash_offer
-            self.money += cash_request
-            other_player.money -= cash_request
-            other_player.money += cash_offer
-
-            print("Trade completed successfully!")
-            return True
-        else:
-            print("Trade rejected.")
-            return False
-        
     def go_to_jail(self):
         self.in_jail = True
         self.jail_turns = 0

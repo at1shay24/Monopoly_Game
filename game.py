@@ -37,13 +37,9 @@ class Game:
                 if bought:
                     print(f"{player.name} bought {tile.name} for ${tile.price}")
                     if tile.houses < 4:
-                        built = player.build_house(tile)
-                        if built:
-                            print(f"{player.name} chose to build a house on {tile.name}")
+                        player.build_house(tile, self.board)
                     elif tile.houses == 4 and not tile.hotel:
-                        built = player.build_hotel(tile)
-                        if built:
-                            print(f"{player.name} upgraded {tile.name} to a hotel")
+                        player.build_hotel(tile, self.board)
             else:
                 tile.charge_rent(player)
 
