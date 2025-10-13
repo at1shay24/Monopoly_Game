@@ -1,79 +1,76 @@
-from board import board
-from property import Property
+import random
 from player import Player
-from dice import Dice
-from cards import chance_deck, community_chest_deck
+from property import Property
 
 class Game:
-    def __init__(self, players):
+    def __init__(self, players, board):
         self.players = players
-        self.current_turn = 0
         self.board = board
+        self.current_player_index = 0
+        self.running = True
+
+    def roll_dice(self):
+        return random.randint(1, 6), random.randint(1, 6)
 
     def next_turn(self):
-        player = self.players[self.current_turn]
+        player = self.players[self.current_player_index]
         print(f"\n--- {player.name}'s Turn ---")
 
         if player.in_jail:
-            total, (die1, die2) = Dice.roll()
-            print(f"{player.name} rolled {die1} + {die2} = {total} (trying to leave Jail)")
-            freed = player.attempt_jail_exit(die1, die2)
-            if not freed:
-                print(f"{player.name} remains in Jail.")
-                self.current_turn = (self.current_turn + 1) % len(self.players)
+            die1, die2 = self.roll_dice()
+            print(f"{player.name} rolled {die1} and {die2} trying to get out of jail...")
+            if not player.attempt_jail_exit(die1, die2):
+                self.next_player()
                 return
+
+        die1, die2 = self.roll_dice()
+        steps = die1 + die2
+        print(f"{player.name} rolled {die1} and {die2} → moving {steps} spaces.")
+        player.move(steps)
+
+        space = self.board.spaces[player.position]
+
+        if isinstance(space, Property):
+            if not space.is_owned():
+                print(f"{space.name} is unowned and costs ${space.price}.")
+                if player.money >= space.price:
+                    choice = input(f"Do you want to buy {space.name}? (y/n): ").lower()
+                    if choice == 'y':
+                        space.buy(player)
+                        print(f"{player.name} bought {space.name}!")
+
+            elif space.owner != player:
+                space.charge_rent(player)
+
             else:
-                player.move(total)
+                # Player owns it, maybe build a house or hotel
+                if player.owns_full_set(space, self.board):
+                    print(f"You own all properties of {space.color}! You can build on {space.name}.")
+                    action = input("Build (house/hotel/none)? ").lower()
+                    if action == "house":
+                        player.build_house(space, self.board)
+                    elif action == "hotel":
+                        player.build_hotel(space, self.board)
+                else:
+                    print(f"You don't own all {space.color} properties yet.")
+
         else:
-            total, (die1, die2) = Dice.roll()
-            print(f"{player.name} rolled {die1} + {die2} = {total}")
-            player.move(total)
+            print(f"{player.name} landed on a non-property space: {space}")
 
-        tile = self.board.get_space(player.position)
+        self.check_bankruptcy(player)
+        self.next_player()
 
-        if isinstance(tile, Property):
-            if not tile.is_owned():
-                bought = tile.buy(player)
-                if bought:
-                    print(f"{player.name} bought {tile.name} for ${tile.price}")
-                    if tile.houses < 4:
-                        player.build_house(tile, self.board)
-                    elif tile.houses == 4 and not tile.hotel:
-                        player.build_hotel(tile, self.board)
-            else:
-                tile.charge_rent(player)
+    def check_bankruptcy(self, player):
+        if player.money < 0:
+            print(f"{player.name} is bankrupt and out of the game!")
+            self.players.remove(player)
+            if len(self.players) == 1:
+                print(f"\n🏆 {self.players[0].name} wins the game!")
+                self.running = False
 
-        elif isinstance(tile, str):
-            print(f"{player.name} landed on {tile}")
+    def next_player(self):
+        self.current_player_index = (self.current_player_index + 1) % len(self.players)
 
-            if tile == "Go To Jail":
-                player.go_to_jail()
-
-            elif tile == "Chance":
-                card = chance_deck.draw()
-                card.apply(player, self)
-
-            elif tile == "Community Chest":
-                card = community_chest_deck.draw()
-                card.apply(player, self)
-
-            elif tile == "Income Tax":
-                tax = min(200, int(player.money * 0.1))
-                player.pay(tax)
-                print(f"{player.name} paid ${tax} in Income Tax")
-
-            elif tile == "Luxury Tax":
-                player.pay(100)
-                print(f"{player.name} paid $100 in Luxury Tax")
-
-        self.current_turn = (self.current_turn + 1) % len(self.players)
-
-
-if __name__ == "__main__":
-    p1 = Player("Alice")
-    p2 = Player("Bob")
-
-    game = Game([p1, p2])
-
-    for _ in range(15):
-        game.next_turn()
+    def play(self):
+        while self.running:
+            self.next_turn()
