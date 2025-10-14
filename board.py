@@ -16,55 +16,55 @@ class Board:
         return self.spaces[index]
 
 
-# ===== WEST DELHI PROPERTIES (Names only changed) ===== #
+# ===== WEST DELHI PROPERTIES (with color & house_cost) ===== #
 
 # Brown
-rani_bagh = Property("Rani Bagh", 60, 2)
-shakurpur = Property("Shakurpur", 60, 4)
+rani_bagh = Property("Rani Bagh", 60, 2, color="Brown", house_cost=50)
+shakurpur = Property("Shakurpur", 60, 4, color="Brown", house_cost=50)
 
 # Light Blue
-pitampura = Property("Pitampura", 100, 6)
-kohat_enclave = Property("Kohat Enclave", 100, 6)
-saraswati_vihar = Property("Saraswati Vihar", 120, 8)
+pitampura = Property("Pitampura", 100, 6, color="Light Blue", house_cost=50)
+kohat_enclave = Property("Kohat Enclave", 100, 6, color="Light Blue", house_cost=50)
+saraswati_vihar = Property("Saraswati Vihar", 120, 8, color="Light Blue", house_cost=50)
 
 # Pink
-ashok_vihar = Property("Ashok Vihar", 140, 10)
-model_town = Property("Model Town", 140, 10)
-rohini_sec7 = Property("Rohini Sector 7", 160, 12)
+ashok_vihar = Property("Ashok Vihar", 140, 10, color="Pink", house_cost=100)
+model_town = Property("Model Town", 140, 10, color="Pink", house_cost=100)
+rohini_sec7 = Property("Rohini Sector 7", 160, 12, color="Pink", house_cost=100)
 
 # Orange
-rohini_sec13 = Property("Rohini Sector 13", 180, 14)
-paschim_vihar = Property("Paschim Vihar", 180, 14)
-mangolpuri = Property("Mangolpuri", 200, 16)
+rohini_sec13 = Property("Rohini Sector 13", 180, 14, color="Orange", house_cost=100)
+paschim_vihar = Property("Paschim Vihar", 180, 14, color="Orange", house_cost=100)
+mangolpuri = Property("Mangolpuri", 200, 16, color="Orange", house_cost=100)
 
 # Red
-rajouri_garden = Property("Rajouri Garden", 220, 18)
-punjabi_bagh = Property("Punjabi Bagh", 220, 18)
-tilak_nagar = Property("Tilak Nagar", 240, 20)
+rajouri_garden = Property("Rajouri Garden", 220, 18, color="Red", house_cost=150)
+punjabi_bagh = Property("Punjabi Bagh", 220, 18, color="Red", house_cost=150)
+tilak_nagar = Property("Tilak Nagar", 240, 20, color="Red", house_cost=150)
 
 # Yellow
-kirti_nagar = Property("Kirti Nagar", 260, 22)
-janakpuri = Property("Janakpuri", 260, 22)
-subhash_nagar = Property("Subhash Nagar", 280, 24)
+kirti_nagar = Property("Kirti Nagar", 260, 22, color="Yellow", house_cost=150)
+janakpuri = Property("Janakpuri", 260, 22, color="Yellow", house_cost=150)
+subhash_nagar = Property("Subhash Nagar", 280, 24, color="Yellow", house_cost=150)
 
 # Green
-vikaspuri = Property("Vikaspuri", 300, 26)
-tagore_garden = Property("Tagore Garden", 300, 26)
-rajouri_ext = Property("Rajouri Extension", 320, 28)
+vikaspuri = Property("Vikaspuri", 300, 26, color="Green", house_cost=200)
+tagore_garden = Property("Tagore Garden", 300, 26, color="Green", house_cost=200)
+rajouri_ext = Property("Rajouri Extension", 320, 28, color="Green", house_cost=200)
 
 # Dark Blue
-west_delhi_mall = Property("West Delhi Mall", 350, 35)
-club_road_west_delhi = Property("Club Road, West Delhi", 400, 50)
+west_delhi_mall = Property("West Delhi Mall", 350, 35, color="Dark Blue", house_cost=200)
+club_road_west_delhi = Property("Club Road, West Delhi", 400, 50, color="Dark Blue", house_cost=200)
 
 # Railroads
-outer_ring_road = Property("Outer Ring Road", 200, 25)
-rohtak_road = Property("Rohtak Road", 200, 25)
-nazafgarh_road = Property("Najafgarh Road", 200, 25)
-ring_road = Property("Ring Road", 200, 25)
+outer_ring_road = Property("Outer Ring Road", 200, 25, color="Railroad")
+rohtak_road = Property("Rohtak Road", 200, 25, color="Railroad")
+nazafgarh_road = Property("Najafgarh Road", 200, 25, color="Railroad")
+ring_road = Property("Ring Road", 200, 25, color="Railroad")
 
 # Utilities
-bSES = Property("BSES Power Station", 150, 10)
-djB = Property("Delhi Jal Board Office", 150, 10)
+bSES = Property("BSES Power Station", 150, 10, color="Utility")
+djB = Property("Delhi Jal Board Office", 150, 10, color="Utility")
 
 
 # === PROPERTY POSITIONS ON THE BOARD === #
