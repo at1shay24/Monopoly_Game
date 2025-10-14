@@ -20,7 +20,7 @@ class Property:
         self.houses = 0
         self.hotel = False
         self.house_cost = house_cost
-        self.color = color  # NEW: color group (e.g., "Pink", "Red")
+        self.color = color
 
     def is_owned(self):
         return self.owner is not None
@@ -30,25 +30,21 @@ class Property:
             player.money -= self.price
             player.properties.append(self)
             self.owner = player
+            print(f"{player.name} bought {self.name}!")
             return True
         return False
 
     def build_house(self, player):
         if self.owner == player and not self.hotel:
-            # NEW: must own full color set
             same_color = [p for p in player.properties if p.color == self.color]
             if len(same_color) < Property.COLOR_GROUPS.get(self.color, 1):
                 print(f"{player.name} cannot build on {self.name}, full {self.color} set not owned!")
                 return False
-
-            if self.houses < 4: 
-                if player.money >= self.house_cost:
-                    player.money -= self.house_cost
-                    self.houses += 1
-                    print(f"{player.name} built a house on {self.name}. Total houses: {self.houses}")
-                    if self.houses == 4:
-                        print(f"{self.name} now has 4 houses and is eligible for a hotel upgrade!")
-                    return True
+            if self.houses < 4 and player.money >= self.house_cost:
+                player.money -= self.house_cost
+                self.houses += 1
+                print(f"{player.name} built a house on {self.name}. Total houses: {self.houses}")
+                return True
         return False
 
     def build_hotel(self, player):
@@ -59,10 +55,8 @@ class Property:
                 self.hotel = True
                 print(f"{player.name} upgraded {self.name} to a HOTEL!")
                 return True
-        else:
-            print(f"{self.name} cannot be upgraded to a hotel yet (needs 4 houses first).")
         return False
-    
+
     def get_rent(self):
         if self.hotel:
             return self.base_rent * 5

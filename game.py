@@ -1,10 +1,11 @@
-import random
 from dice import Dice
 from player import Player
 from property import Property
+from board import board
+from cards import chance_deck, community_chest_deck
 
 class Game:
-    def __init__(self, players, board):
+    def __init__(self, players):
         self.players = players
         self.board = board
         self.current_player = 0
@@ -13,7 +14,7 @@ class Game:
     def next_turn(self):
         player = self.players[self.current_player]
         print(f"\n--- {player.name}'s Turn ---")
-        
+
         if player.in_jail:
             die1, die2, _ = Dice.roll()
             print(f"{player.name} rolled {die1} & {die2} trying to get out of jail...")
@@ -34,9 +35,28 @@ class Game:
                         player.buy_property(space)
             elif space.owner != player:
                 space.charge_rent(player)
-
         else:
-            print(f"{player.name} landed on {space}")
+            if space == "Chance":
+                card = chance_deck.draw()
+                card.apply(player, self)
+            elif space == "Community Chest":
+                card = community_chest_deck.draw()
+                card.apply(player, self)
+            elif space == "Go":
+                player.receive(200)
+                print(f"{player.name} landed on Go and collected $200!")
+            elif space == "Income Tax":
+                player.pay(200)
+                print(f"{player.name} paid $200 income tax.")
+            elif space == "Luxury Tax":
+                player.pay(75)
+                print(f"{player.name} paid $75 luxury tax.")
+            elif space == "Jail":
+                print(f"{player.name} is just visiting Jail.")
+            elif space == "Go To Jail":
+                player.go_to_jail()
+            elif space == "Free Parking":
+                print(f"{player.name} landed on Free Parking. Nothing happens.")
 
         self.check_bankruptcy(player)
         self.next_player()
@@ -47,11 +67,4 @@ class Game:
     def check_bankruptcy(self, player):
         if player.money < 0:
             print(f"{player.name} is bankrupt!")
-            self.players.remove(player)
-            if len(self.players) == 1:
-                print(f"{self.players[0].name} wins!")
-                self.running = False
-
-    def play(self):
-        while self.running:
-            self.next_turn()
+            self
